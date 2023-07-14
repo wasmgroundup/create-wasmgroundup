@@ -45,18 +45,24 @@ test.run();
     }
     throw err;
   }
+  process.chdir(destDir);
 
-  fs.mkdirSync(path.join(destDir, 'chapters'));
+  const readme = rs.readFileSync('README.md');
+  fs.writeFileSync(
+    readme.replace(
+      'This repo contains the code from every checkpoint in the book.',
+      `We've initialized a new project template for you. You can copy the
+  code from the book into the files in the chapters/ directory.`,
+    ),
+  );
 
-  for (const name of fs.readdirSync(destDir)) {
+  fs.mkdirSync('chapters');
+
+  for (const name of fs.readdirSync('.')) {
     if (!name.match(/chapter.\d$/)) continue;
 
-    fs.rmSync(path.join(destDir, name), { recursive: true, force: true });
-    fs.writeFileSync(
-      path.join(destDir, 'chapters', `${name}.js`),
-      getSource(name),
-    );
+    fs.rmSync(name, { recursive: true, force: true });
+    fs.writeFileSync(path.join('chapters', `${name}.js`), getSource(name));
   }
-  process.chdir(destDir);
   execFileSync('npm', ['install'], { stdio: 'inherit' });
 })();
