@@ -1,0 +1,28 @@
+{
+  "name": "create-wasmgroundup",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "create-wasmgroundup": "index.js"
+  },
+  "scripts": {
+    "format": "npx prettier --write --single-quote ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wasmgroundup/create-wasmgroundup.git"
+  },
+  "author": "Patrick Dubroy <pdubroy@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wasmgroundup/create-wasmgroundup/issues"
+  },
+  "homepage": "https://github.com/wasmgroundup/create-wasmgroundup#readme",
+  "dependencies": {
+    "degit": "^2.8.4"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
