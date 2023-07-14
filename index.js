@@ -47,14 +47,12 @@ test.run();
   }
   process.chdir(destDir);
 
-  const readme = rs.readFileSync('README.md');
-  fs.writeFileSync(
-    readme.replace(
-      'This repo contains the code from every checkpoint in the book.',
-      `We've initialized a new project template for you. You can copy the
-  code from the book into the files in the chapters/ directory.`,
-    ),
+  const readme = fs.readFileSync('README.md', 'utf8').replace(
+    'This repo contains the code from every checkpoint in the book.',
+    `We've initialized a new project template for you. You can copy the
+code from the book into the files in the chapters/ directory.`,
   );
+  fs.writeFileSync('README.md', readme);
 
   fs.mkdirSync('chapters');
 
@@ -65,4 +63,8 @@ test.run();
     fs.writeFileSync(path.join('chapters', `${name}.js`), getSource(name));
   }
   execFileSync('npm', ['install'], { stdio: 'inherit' });
+
+  console.log(
+    `\nYou're all set! You can do ${'`'}cd ${destDir}${'`'} to get started.`,
+  );
 })();
