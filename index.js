@@ -17,14 +17,13 @@ if (!destDir) bail(`no destination directory specified\n\n${usage}`);
 
 function getSource(chapterName) {
   const extraImports =
-    chapterName === 'chapter01' ? '' : ', ohm, extractExamples';
-  return `import { setup } from '../book.js';
-
-const { test, assert${extraImports} } = setup('${chapterName}');
+    chapterName === 'chapter02'
+      ? "\nimport {extractExamples} from 'ohm-js/extras'';"
+      : '';
+  return `import assert from 'node:assert';
+import * as ohm from 'ohm-js';${extraImports}
 
 // Your code goes here.
-
-test.run();
 `;
 }
 
@@ -47,11 +46,19 @@ test.run();
   }
   process.chdir(destDir);
 
-  const readme = fs.readFileSync('README.md', 'utf8').replace(
-    'This repo contains the code from every checkpoint in the book.',
-    `We've initialized a new project template for you. You can copy the
-code from the book into the files in the chapters/ directory.`,
-  );
+  const readme = `# 🧱 WebAssembly from the Ground Up
+
+Welcome! We've initialized a new project template for you. You can copy the
+code from the book into the files in the chapters/ directory.
+
+Here are some useful commands:
+
+- ${'`'}npm test${'`'} to run all tests for all checkpoints.
+- ${'`'}node --test '<dirname>/*.js'${'`'} to run all tests for a specific chapter.
+  E.g., ${'`'}node --test 'chapter01/*.js'${'`'} for Chapter 1.
+- ${'`'}node --test <filename>${'`'} to run the tests in a specific checkpoint.
+  E.g. ${'`'}node --test chapter02/01-noplang.js${'`'}.
+`;
   fs.writeFileSync('README.md', readme);
 
   fs.mkdirSync('chapters');
