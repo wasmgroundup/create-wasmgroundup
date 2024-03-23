@@ -53,11 +53,9 @@ code from the book into the files in the chapters/ directory.
 
 Here are some useful commands:
 
-- ${'`'}npm test${'`'} to run all tests for all checkpoints.
-- ${'`'}node --test '<dirname>/*.js'${'`'} to run all tests for a specific chapter.
-  E.g., ${'`'}node --test 'chapter01/*.js'${'`'} for Chapter 1.
-- ${'`'}node --test <filename>${'`'} to run the tests in a specific checkpoint.
-  E.g. ${'`'}node --test chapter02/01-noplang.js${'`'}.
+- ${'`'}npm test${'`'} to run all tests for all chapters.
+- ${'`'}node --test chapters/<filename>${'`'} to run tests for a specific chapter.
+  E.g., ${'`'}node --test chapters/chapter01.js${'`'} for Chapter 1.
 `;
   fs.writeFileSync('README.md', readme);
 
