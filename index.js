@@ -18,7 +18,7 @@ if (!destDir) bail(`no destination directory specified\n\n${usage}`);
 function getSource(chapterName) {
   const extraImports =
     chapterName === 'chapter02'
-      ? "\nimport {extractExamples} from 'ohm-js/extras'';"
+      ? "\nimport {extractExamples} from 'ohm-js/extras';"
       : '';
   return `import assert from 'node:assert';
 import * as ohm from 'ohm-js';${extraImports}
