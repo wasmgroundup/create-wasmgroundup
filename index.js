@@ -33,7 +33,11 @@ if (!destDir) bail(`no destination directory specified\n\n${usage}`);
   }
   process.chdir(destDir);
   console.log('Running "npm install" in the destination directory...');
-  spawnSync("npm", ["install", "--silent"], { stdio: "inherit" });
+  spawnSync("npm", ["install", "--silent"], {
+    stdio: "inherit",
+    shell: true,
+    env: process.env,
+  });
 
   console.log(readFileSync("README.md", "utf8").trimEnd());
   console.log(
