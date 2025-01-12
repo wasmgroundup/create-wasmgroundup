@@ -43,4 +43,5 @@ if (!destDir) bail(`no destination directory specified\n\n${usage}`);
   console.log(
     `\nYou're all set! You can do ${"`"}cd ${destDir}${"`"} to get started.`,
   );
+  process.exit(0);
 })();
