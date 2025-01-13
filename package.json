@@ -1,7 +1,7 @@
 {
   "name": "create-wasmgroundup",
   "type": "module",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "",
   "bin": {
     "create-wasmgroundup": "index.js"
@@ -20,7 +20,8 @@
   },
   "homepage": "https://github.com/wasmgroundup/create-wasmgroundup#readme",
   "dependencies": {
-    "degit": "^2.8.4"
+    "degit": "^2.8.4",
+    "prompts": "^2.4.2"
   },
   "devDependencies": {
     "prettier": "^3.0.0"

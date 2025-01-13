@@ -3,18 +3,25 @@
 import degit from "degit";
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import prompts from "prompts";
 
-const usage = "Usage: create-wasmgroundup dest_dir";
+const usage = "Usage: create-wasmgroundup <dest_dir>";
+
+const userAgent = process.env.npm_config_user_agent ?? "";
+const pkgMan = /pnpm/.test(userAgent)
+  ? "pnpm"
+  : /yarn/.test(userAgent)
+  ? "yarn"
+  : /bun/.test(userAgent)
+  ? "bun"
+  : "npm";
 
 function bail(message) {
   process.stderr.write(`error: ${message}\n`);
   process.exit(1);
 }
 
-const destDir = process.argv[2];
-if (!destDir) bail(`no destination directory specified\n\n${usage}`);
-
-(async function main() {
+async function cloneTemplate(destDir) {
   const emitter = degit("https://github.com/wasmgroundup/reader-template", {
     cache: false,
   });
@@ -31,9 +38,32 @@ if (!destDir) bail(`no destination directory specified\n\n${usage}`);
     }
     throw err;
   }
-  process.chdir(destDir);
-  console.log('Running "npm install" in the destination directory...');
-  spawnSync("npm", ["install", "--silent"], {
+}
+
+(async function main() {
+  let targetDir = process.argv[2];
+  const defaultProjectName = !targetDir ? "wasmgroundup" : targetDir;
+  let result = {};
+  try {
+    result = await prompts([
+      {
+        name: "projectName",
+        type: targetDir ? null : "text",
+        message: "Project name",
+        initial: defaultProjectName,
+        onState: (state) =>
+          (targetDir = String(state.value).trim() || defaultProjectName),
+      },
+    ]);
+  } catch (cancelled) {
+    console.log(cancelled.message);
+    process.exit(1);
+  }
+  await cloneTemplate(targetDir);
+
+  process.chdir(targetDir);
+  console.log(`Running '${pkgMan} install' in the destination directory...`);
+  spawnSync(pkgMan, ["install", "--silent"], {
     stdio: "inherit",
     shell: true,
     env: process.env,
@@ -41,7 +71,7 @@ if (!destDir) bail(`no destination directory specified\n\n${usage}`);
 
   console.log(readFileSync("README.md", "utf8").trimEnd());
   console.log(
-    `\nYou're all set! You can do ${"`"}cd ${destDir}${"`"} to get started.`,
+    `\nYou're all set! You can do ${"`"}cd ${targetDir}${"`"} to get started.`,
   );
   process.exit(0);
 })();
